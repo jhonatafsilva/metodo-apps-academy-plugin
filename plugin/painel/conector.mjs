@@ -13,7 +13,7 @@ export class Refused extends Error {}
 
 // The API of the house in production. To work on the method locally, set
 // METODO_APPS_ACADEMY_URL=http://localhost:3068.
-export const productionUrl = "https://metodo-api.appsacademy.com.br";
+export const productionUrl = "https://api.appsacademy.com.br";
 
 export function serverUrl(environment = process.env) {
   return environment.METODO_APPS_ACADEMY_URL || productionUrl;
