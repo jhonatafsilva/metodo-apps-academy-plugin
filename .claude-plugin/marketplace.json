@@ -1,0 +1,15 @@
+{
+  "name": "apps-academy",
+  "description": "Plugins da Apps Academy para criar apps com o Claude Code.",
+  "owner": {
+    "name": "Apps Academy",
+    "url": "https://appsacademy.com.br"
+  },
+  "plugins": [
+    {
+      "name": "metodo-apps-academy",
+      "source": "./plugin",
+      "description": "Conduz a criação de um app pelo Método Apps Academy, com o painel do app no seu computador."
+    }
+  ]
+}
