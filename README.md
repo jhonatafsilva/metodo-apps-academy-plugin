@@ -6,27 +6,16 @@ Plugin do [Método Apps Academy](https://appsacademy.com.br): ele conduz a cria�
 
 ## Instalar
 
-O caminho mais fácil é a sua página de ativação, que chega pelo convite: <https://metodo.appsacademy.com.br>. Ela mostra cada passo e gera a sua chave.
+Entre na sua página de ativação, que chega pelo convite: <https://metodo.appsacademy.com.br>. Clique em **Gerar o meu prompt**, copie e cole numa conversa do [Claude Code](https://claude.com/product/claude-code). O próprio Claude confere o Node.js, instala o plugin e guarda a sua chave no cofre do computador.
 
-Você precisa de:
-
-- [Claude Code](https://claude.com/product/claude-code), com uma assinatura do Claude;
-- [Node.js](https://nodejs.org) 20 ou mais novo.
-
-No terminal:
+Se preferir o terminal, são os mesmos comandos do prompt, com a chave da sua página no lugar de `SUA_CHAVE`:
 
 ```sh
-claude plugin marketplace add jhonatafsilva/metodo-apps-academy-plugin
-claude plugin install metodo-apps-academy@apps-academy
+claude plugin install metodo-apps-academy --marketplace jhonatafsilva/metodo-apps-academy-plugin
+echo '{"chave":"SUA_CHAVE"}' | claude plugin configure metodo-apps-academy@apps-academy --values-stdin
 ```
 
-Depois abra o Claude Code e guarde a sua chave, gerada na página de ativação:
-
-```text
-/plugin configure metodo-apps-academy@apps-academy
-```
-
-Cole a chave quando ele pedir a **Chave do Método Apps Academy**. Ela fica guardada no cofre do seu computador. Para trocar a chave, rode o mesmo comando.
+O plugin precisa do [Node.js](https://nodejs.org) 20 ou mais novo. Para trocar a chave, gere um prompt novo na página e cole de novo.
 
 ## Usar
 
