@@ -74,4 +74,4 @@ Escreva para a pessoa, não para outro agente: português simples, sem nome de a
 - Um passo marcado `(bloqueado)` no plano é de uma etapa fora da assinatura do espaço. Ele aparece para a pessoa saber o caminho inteiro, mas a ficha dele não chega e `complete_step` recusa. Não tente fazer esse passo de outro jeito.
 - O que gasta dinheiro ou publica algo (contratar, pagar, enviar para a loja) só acontece com a confirmação dela.
 - Se uma ferramenta do conector responder com erro, mostre a mensagem à pessoa e não invente o passo.
-- Se o conector `metodo` não estiver disponível ou recusar a chave, diga à pessoa para abrir `/plugin`, desativar e ativar de novo o Método Apps Academy e colar a chave da página de ativação quando o Claude Code pedir. Depois, pare.
+- Se o conector `metodo` não estiver disponível ou recusar a chave, diga à pessoa para digitar `/plugin configure metodo-apps-academy@apps-academy` e colar a chave da página de ativação (https://metodo.appsacademy.com.br). Depois, pare.

@@ -20,7 +20,13 @@ claude plugin marketplace add jhonatafsilva/metodo-apps-academy-plugin
 claude plugin install metodo-apps-academy@apps-academy
 ```
 
-Quando o Claude Code pedir a **Chave do Método Apps Academy**, cole a chave da sua página de ativação. Ela fica guardada no cofre do seu computador. Para trocar a chave, abra `/plugin`, desative e ative o plugin de novo.
+Depois abra o Claude Code e guarde a sua chave, gerada na página de ativação:
+
+```text
+/plugin configure metodo-apps-academy@apps-academy
+```
+
+Cole a chave quando ele pedir a **Chave do Método Apps Academy**. Ela fica guardada no cofre do seu computador. Para trocar a chave, rode o mesmo comando.
 
 ## Usar
 
