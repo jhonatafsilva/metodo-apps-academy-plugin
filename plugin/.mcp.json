@@ -5,7 +5,8 @@
       "url": "${METODO_APPS_ACADEMY_URL:-https://api.appsacademy.com.br}/mcp",
       "headers": {
         "Authorization": "Bearer ${user_config.chave}"
-      }
+      },
+      "headersHelper": "node \"${CLAUDE_PLUGIN_ROOT}/painel/instalacao.mjs\""
     }
   }
 }

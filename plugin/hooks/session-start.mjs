@@ -34,6 +34,12 @@ if (existsSync(stateFile)) {
     syncPanelData(process.cwd()).catch(() => ({ ok: false })),
   ]);
 
+  // The server said no, as for a key bound to another computer or a space
+  // without subscription: the agent passes the words on and stops.
+  if (sync.motivo === "recusado") {
+    planNote = ` O método recusou o acesso: "${sync.erro}". Antes de qualquer outra coisa, repita essa mensagem à pessoa e não siga os passos.`;
+  }
+
   if (sync.ok) {
     planNote = ` O plano inteiro, com o progresso, está atualizado em .metodo/plano.md (passo da vez: ${sync.passoDaVez ?? "nenhum"}).`;
 

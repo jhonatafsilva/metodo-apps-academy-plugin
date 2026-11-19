@@ -12,10 +12,12 @@ Se preferir o terminal, são os mesmos comandos do prompt, com a chave da sua p�
 
 ```sh
 claude plugin install metodo-apps-academy --marketplace jhonatafsilva/metodo-apps-academy-plugin
+claude plugin marketplace update apps-academy
+claude plugin update metodo-apps-academy@apps-academy
 echo '{"chave":"SUA_CHAVE"}' | claude plugin configure metodo-apps-academy@apps-academy --values-stdin
 ```
 
-O plugin precisa do [Node.js](https://nodejs.org) 20 ou mais novo. Para trocar a chave, gere um prompt novo na página e cole de novo.
+O plugin precisa do [Node.js](https://nodejs.org) 20 ou mais novo. A chave funciona num computador só: o primeiro que a usar. Para usar em outro computador ou trocar a chave, gere um prompt novo na página e cole nele; o computador anterior deixa de funcionar.
 
 ## Usar
 

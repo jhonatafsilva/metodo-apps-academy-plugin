@@ -7,6 +7,8 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
+import { installationHeader, installationId } from "./instalacao.mjs";
+
 // The server answered and said no, such as a space without an active
 // subscription: the message is for the person, word for word.
 export class Refused extends Error {}
@@ -40,6 +42,8 @@ export async function callTool(name, args, { url, key, timeout = 8000 }) {
       accept: "application/json, text/event-stream",
       "content-type": "application/json",
       "mcp-protocol-version": "2025-11-25",
+      // The key works on one computer: this one, once it is bound.
+      [installationHeader]: installationId(),
     },
     body: JSON.stringify({
       jsonrpc: "2.0",
@@ -49,6 +53,21 @@ export async function callTool(name, args, { url, key, timeout = 8000 }) {
     }),
   });
   const text = await response.text();
+
+  // A refusal before the tool runs, such as a key bound to another
+  // computer: the server explains it in words for the person.
+  if (response.status === 401 || response.status === 403) {
+    let message = "";
+
+    try {
+      message = JSON.parse(text).message ?? "";
+    } catch {
+      // Not a JSON answer: the generic message below.
+    }
+
+    throw new Refused(message || "A chave do método foi recusada.");
+  }
+
   // The server may answer as plain JSON or as one server-sent event.
   const json = text.trimStart().startsWith("{")
     ? text
