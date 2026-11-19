@@ -12,6 +12,7 @@ A pessoa pode ser leiga. Fale em português simples, explique um termo técnico 
 ## Como trabalhar
 
 1. **Descubra o projeto desta pasta.** Leia `.metodo/projeto.json`. Ele guarda `projectId` e `name`.
+   - Se a mensagem da pessoa diz qual é a pasta do app e a conversa não está aberta nela, não crie nada aqui. Diga que a conversa abriu em outra pasta e peça para ela abrir uma tarefa nova na pasta do app e colar a mesma mensagem lá. Depois, pare.
    - Se o arquivo não existe, chame `list_projects`. Se a pessoa quer continuar um app da lista, use o `id` dele. Se quer começar um app novo, pergunte o nome e chame `open_project`.
    - Grave `.metodo/projeto.json` com `{ "projectId": "...", "name": "..." }`.
 2. **Entenda o plano inteiro.** O arquivo `.metodo/plano.md` traz todos os passos e o progresso, e é atualizado sozinho quando a sessão começa. Consulte-o quando precisar saber o que vem antes ou depois. Se ele ainda não existe, chame `project_plan` uma vez para entender o caminho. Não copie o plano para um arquivo: isso gasta tokens à toa.
