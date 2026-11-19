@@ -1,12 +1,12 @@
 // Runs when a session starts. In a folder that already follows the method, it
 // reminds the agent of the project and refreshes the plan file straight from
 // the server, so the plan never costs tokens to copy.
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 import { syncPanelData, syncPlan } from "../painel/conector.mjs";
-import { startInBackground } from "../painel/servidor.mjs";
+import { startInBackground, writeLauncher } from "../painel/servidor.mjs";
 
 const panelServer = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -50,36 +50,21 @@ if (existsSync(stateFile)) {
     }
   }
 
-  // The panel of the app runs on this computer. The launcher in .metodo/
-  // points to the plugin as it is installed now, so the person can also
-  // start the panel without the agent: "node .metodo/painel.mjs".
+  // The panel of the app runs on this computer. It opens in the browser
+  // when no tab shows it yet, so the person follows the app from the start.
   let panelNote = "";
 
   try {
-    mkdirSync(folder, { recursive: true });
-    writeFileSync(
-      join(folder, "painel.mjs"),
-      [
-        "// Liga o painel deste app. Gerado pelo plugin do Método Apps Academy a cada sessão.",
-        "//   node .metodo/painel.mjs            liga e fica rodando",
-        "//   node .metodo/painel.mjs --abrir    liga e abre o navegador",
-        "//   node .metodo/painel.mjs parar      desliga",
-        'import { dirname } from "node:path";',
-        'import { fileURLToPath } from "node:url";',
-        "",
-        `import { runCommand } from ${JSON.stringify(pathToFileURL(panelServer).href)};`,
-        "",
-        "const appFolder = dirname(dirname(fileURLToPath(import.meta.url)));",
-        "",
-        `await runCommand(appFolder, process.argv.slice(2), ${JSON.stringify(panelServer)});`,
-        "",
-      ].join("\n"),
-    );
+    writeLauncher(process.cwd(), panelServer);
 
-    const panel = await startInBackground(process.cwd(), panelServer);
+    const panel = await startInBackground(process.cwd(), panelServer, {
+      unlessSeen: true,
+    });
 
     if (panel.url) {
-      panelNote = ` O painel do app está ligado em ${panel.url}: é onde a pessoa vê o app sendo construído.`;
+      panelNote = panel.aberto
+        ? ` O painel do app abriu no navegador da pessoa, em ${panel.url}: é onde ela vê o app sendo construído.`
+        : ` O painel do app está ligado em ${panel.url} e já aberto no navegador: é onde a pessoa vê o app sendo construído.`;
     }
   } catch {
     // The panel is a convenience: it never stops the session.

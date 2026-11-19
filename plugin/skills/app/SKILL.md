@@ -15,7 +15,7 @@ A pessoa pode ser leiga. Fale em português simples, explique um termo técnico 
    - Se a mensagem da pessoa diz qual é a pasta do app e a conversa não está aberta nela, não crie nada aqui. Diga que a conversa abriu em outra pasta e peça para ela abrir uma tarefa nova na pasta do app e colar a mesma mensagem lá. Depois, pare.
    - Se o arquivo não existe, chame `list_projects`. Se a pessoa quer continuar um app da lista, use o `id` dele.
    - Se ela quer começar um app novo, chame `list_app_types` e pergunte só o tipo do app, explicando cada um em uma linha. Se ela não souber, peça a ideia em poucas palavras e ajude a escolher. Não peça o nome: no método, o nome sai da pesquisa. Chame `open_project` sem `name`, e o app começa como "App sem nome".
-   - Grave `.metodo/projeto.json` com `{ "projectId": "...", "name": "..." }`.
+   - Ao abrir o app, o plugin grava `.metodo/projeto.json` e abre o painel do app no navegador. Se o arquivo não aparecer, grave você com `{ "projectId": "...", "name": "..." }`. Ao continuar um app da lista, grave você.
    - **O nome do app.** Até a pessoa escolher o nome, chame o app de "o seu app". Quando ela escolher, no passo do método que decide isso, chame `rename_project` e troque o `name` em `.metodo/projeto.json`.
 2. **Entenda o plano inteiro.** O arquivo `.metodo/plano.md` traz todos os passos e o progresso, e é atualizado sozinho quando a sessão começa. Consulte-o quando precisar saber o que vem antes ou depois. Se ele ainda não existe, chame `project_plan` uma vez para entender o caminho. Não copie o plano para um arquivo: isso gasta tokens à toa.
 3. **Conheça a pessoa.** Chame `get_profile` uma vez por sessão. Use o perfil para adaptar cada passo: chame a pessoa pelo nome que ela escolheu, não peça o que ela já informou (computador, celular, temas, objetivo) e ajuste o tamanho do trabalho ao tempo que ela tem por semana. Se o perfil vier vazio, faça as perguntas que ele traz, uma por vez, e grave as respostas com `save_profile` conforme ela responde. Quando ela contar algo novo sobre si (mudou de computador, tem mais horas), grave também. O perfil aparece no painel do app.
@@ -35,7 +35,7 @@ A pessoa pode ser leiga. Fale em português simples, explique um termo técnico 
 
 ## O painel do app
 
-O painel do app é onde a pessoa vê o app sendo construído: um site que roda no computador dela, com um capítulo por etapa e uma página por passo. O gancho de início de sessão já o liga e diz o endereço (em geral `http://127.0.0.1:4747`). Na primeira resposta da sessão, mostre esse endereço à pessoa. Se ela pedir para abrir, rode `node .metodo/painel.mjs --fundo --abrir`. Ele lê só a pasta do app e não envia nada para fora: nunca mande o conteúdo dele ao conector.
+O painel do app é onde a pessoa vê o app sendo construído: um site que roda no computador dela, com um capítulo por etapa e uma página por passo. Ele abre sozinho no navegador quando o app é criado e no começo de cada sessão em que ainda não estiver aberto; o aviso do plugin diz o endereço (em geral `http://127.0.0.1:4747`). Na primeira resposta da sessão, diga à pessoa que o painel está aberto e para que serve. Se ela fechou e quer abrir de novo, rode `node .metodo/painel.mjs --fundo --abrir`. Ele lê só a pasta do app e não envia nada para fora: nunca mande o conteúdo dele ao conector.
 
 Cada página é um arquivo `metodo/workbook/passos/CODIGO.json` (por exemplo `A09.json`). Assim que você grava ou muda o arquivo, a página aparece no painel aberto:
 

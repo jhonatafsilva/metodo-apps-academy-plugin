@@ -11,6 +11,7 @@ import { spawn } from "node:child_process";
 import {
   createReadStream,
   existsSync,
+  mkdirSync,
   readdirSync,
   readFileSync,
   realpathSync,
@@ -22,7 +23,7 @@ import {
 import { createServer } from "node:http";
 import { basename, dirname, extname, join, resolve, sep } from "node:path";
 import { clearInterval, setInterval } from "node:timers";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { readSync, syncPlan } from "./conector.mjs";
 import { parsePlan, stageStatus, stepState } from "./plano.mjs";
@@ -431,7 +432,12 @@ export function createPanel(appFolder, options = {}) {
 
     try {
       if (path === "/api/saude") {
-        sendJson(response, 200, { ok: true, pasta: paths.root });
+        // "vendo": how many tabs have the panel open right now.
+        sendJson(response, 200, {
+          ok: true,
+          pasta: paths.root,
+          vendo: listeners.size,
+        });
 
         return;
       }
@@ -549,7 +555,9 @@ async function runningPanel(paths) {
     });
     const health = await response.json();
 
-    return health.pasta === paths.root ? state : null;
+    return health.pasta === paths.root
+      ? { ...state, vendo: Number(health.vendo ?? 0) }
+      : null;
   } catch {
     return null;
   }
@@ -639,23 +647,60 @@ export async function startPanel(appFolder, options = {}) {
   );
 }
 
+// The launcher in .metodo/ points to the plugin as it is installed now, so
+// the person can also start the panel without the agent:
+// "node .metodo/painel.mjs".
+export function writeLauncher(appFolder, serverFile) {
+  const folder = join(resolve(appFolder), ".metodo");
+
+  mkdirSync(folder, { recursive: true });
+  writeFileSync(
+    join(folder, "painel.mjs"),
+    [
+      "// Liga o painel deste app. Gerado pelo plugin do Método Apps Academy a cada sessão.",
+      "//   node .metodo/painel.mjs            liga e fica rodando",
+      "//   node .metodo/painel.mjs --abrir    liga e abre o navegador",
+      "//   node .metodo/painel.mjs parar      desliga",
+      'import { dirname } from "node:path";',
+      'import { fileURLToPath } from "node:url";',
+      "",
+      `import { runCommand } from ${JSON.stringify(pathToFileURL(serverFile).href)};`,
+      "",
+      "const appFolder = dirname(dirname(fileURLToPath(import.meta.url)));",
+      "",
+      `await runCommand(appFolder, process.argv.slice(2), ${JSON.stringify(serverFile)});`,
+      "",
+    ].join("\n"),
+  );
+}
+
 // Starts the panel in a process of its own, so it keeps running after the
-// command (or the session) that started it ends.
+// command (or the session) that started it ends. With unlessSeen, the browser
+// opens only when no tab shows the panel yet: the person sees the app from
+// the start, without a new tab at every session.
 export async function startInBackground(appFolder, serverFile, options = {}) {
   const paths = appPaths(appFolder);
   const running = await runningPanel(paths);
 
   if (running) {
-    if (options.open) {
+    const opened =
+      Boolean(options.open) || (Boolean(options.unlessSeen) && !running.vendo);
+
+    if (opened) {
       openBrowser(`http://127.0.0.1:${running.porta}`);
     }
 
-    return { url: `http://127.0.0.1:${running.porta}`, novo: false };
+    return {
+      url: `http://127.0.0.1:${running.porta}`,
+      novo: false,
+      aberto: opened,
+    };
   }
 
+  const opened = Boolean(options.open || options.unlessSeen);
   const child = spawn(
     process.execPath,
-    [serverFile, paths.root, ...(options.open ? ["--abrir"] : [])],
+    [serverFile, paths.root, ...(opened ? ["--abrir"] : [])],
     { detached: true, stdio: "ignore", windowsHide: true },
   );
 
@@ -668,11 +713,15 @@ export async function startInBackground(appFolder, serverFile, options = {}) {
     const started = await runningPanel(paths);
 
     if (started) {
-      return { url: `http://127.0.0.1:${started.porta}`, novo: true };
+      return {
+        url: `http://127.0.0.1:${started.porta}`,
+        novo: true,
+        aberto: opened,
+      };
     }
   }
 
-  return { url: null, novo: true };
+  return { url: null, novo: true, aberto: false };
 }
 
 export function stopPanel(appFolder) {

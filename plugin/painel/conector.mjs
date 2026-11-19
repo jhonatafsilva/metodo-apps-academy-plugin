@@ -188,6 +188,43 @@ export async function syncPlan(appFolder, environment = process.env) {
   }
 }
 
+// The app open_project has just opened, from the answer of the tool as the
+// PostToolUse hook receives it: the text of the tool, alone or inside its
+// content blocks. Null when the answer is not an opened app.
+export function openedProject(toolResponse) {
+  const blocks = Array.isArray(toolResponse)
+    ? toolResponse
+    : (toolResponse?.content ?? [toolResponse]);
+  const text = blocks
+    .map((block) => (typeof block === "string" ? block : block?.text))
+    .find((candidate) => typeof candidate === "string");
+
+  try {
+    const project = JSON.parse(text ?? "");
+
+    return typeof project?.id === "string" && typeof project?.name === "string"
+      ? { projectId: project.id, name: project.name }
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+// Records which app this folder is, unless the folder already says so.
+export function rememberProject(appFolder, project) {
+  const folder = join(resolve(appFolder), ".metodo");
+  const file = join(folder, "projeto.json");
+
+  if (existsSync(file)) {
+    return false;
+  }
+
+  mkdirSync(folder, { recursive: true });
+  writeFileSync(file, JSON.stringify(project, null, 2));
+
+  return true;
+}
+
 // What changes rarely and only matters to the panel of the app: the text of
 // each step written for the person, and the profile of who builds. Fetched
 // when a session starts, never after each step.
