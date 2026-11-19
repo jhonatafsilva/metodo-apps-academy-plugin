@@ -12,7 +12,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "mcp__.*metodo.*__(complete_step|open_project|save_profile)",
+        "matcher": "mcp__.*metodo.*__(complete_step|open_project|rename_project|save_profile)",
         "hooks": [
           {
             "type": "command",

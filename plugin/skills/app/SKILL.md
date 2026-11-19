@@ -13,8 +13,10 @@ A pessoa pode ser leiga. Fale em português simples, explique um termo técnico 
 
 1. **Descubra o projeto desta pasta.** Leia `.metodo/projeto.json`. Ele guarda `projectId` e `name`.
    - Se a mensagem da pessoa diz qual é a pasta do app e a conversa não está aberta nela, não crie nada aqui. Diga que a conversa abriu em outra pasta e peça para ela abrir uma tarefa nova na pasta do app e colar a mesma mensagem lá. Depois, pare.
-   - Se o arquivo não existe, chame `list_projects`. Se a pessoa quer continuar um app da lista, use o `id` dele. Se quer começar um app novo, pergunte o nome e chame `open_project`.
+   - Se o arquivo não existe, chame `list_projects`. Se a pessoa quer continuar um app da lista, use o `id` dele.
+   - Se ela quer começar um app novo, chame `list_app_types` e pergunte só o tipo do app, explicando cada um em uma linha. Se ela não souber, peça a ideia em poucas palavras e ajude a escolher. Não peça o nome: no método, o nome sai da pesquisa. Chame `open_project` sem `name`, e o app começa como "App sem nome".
    - Grave `.metodo/projeto.json` com `{ "projectId": "...", "name": "..." }`.
+   - **O nome do app.** Até a pessoa escolher o nome, chame o app de "o seu app". Quando ela escolher, no passo do método que decide isso, chame `rename_project` e troque o `name` em `.metodo/projeto.json`.
 2. **Entenda o plano inteiro.** O arquivo `.metodo/plano.md` traz todos os passos e o progresso, e é atualizado sozinho quando a sessão começa. Consulte-o quando precisar saber o que vem antes ou depois. Se ele ainda não existe, chame `project_plan` uma vez para entender o caminho. Não copie o plano para um arquivo: isso gasta tokens à toa.
 3. **Conheça a pessoa.** Chame `get_profile` uma vez por sessão. Use o perfil para adaptar cada passo: chame a pessoa pelo nome que ela escolheu, não peça o que ela já informou (computador, celular, temas, objetivo) e ajuste o tamanho do trabalho ao tempo que ela tem por semana. Se o perfil vier vazio, faça as perguntas que ele traz, uma por vez, e grave as respostas com `save_profile` conforme ela responde. Quando ela contar algo novo sobre si (mudou de computador, tem mais horas), grave também. O perfil aparece no painel do app.
 4. **Pegue os passos da vez** com `current_steps`. Diga à pessoa, em uma ou duas frases, em que passo estão e o que vem agora.

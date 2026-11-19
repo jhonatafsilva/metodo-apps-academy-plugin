@@ -1,5 +1,5 @@
 // Runs after the agent records a step (complete_step), opens an app
-// (open_project) or saves the profile (save_profile). The server of the house
+// (open_project), names it (rename_project) or saves the profile (save_profile). The server of the house
 // has just changed, so the folder fetches what changed once and the open
 // panel of the app shows it at once. One call per change, never a timer.
 import { readFileSync } from "node:fs";
