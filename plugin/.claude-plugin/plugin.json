@@ -1,7 +1,7 @@
 {
   "name": "metodo-apps-academy",
   "description": "Conduz a criação de um app pelo Método Apps Academy: o agente recebe os passos do método, um bloco por vez, e registra cada entrega.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": {
     "name": "Apps Academy",
     "url": "https://appsacademy.com.br"

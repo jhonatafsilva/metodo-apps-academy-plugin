@@ -1,6 +1,6 @@
 ---
 name: app
-description: Conduz a criação de um app pelo Método Apps Academy. Use sempre que a pessoa quiser começar um app, continuar o app desta pasta, saber o próximo passo, ou digitar /app. Use também antes de qualquer trabalho numa pasta que tenha o arquivo .metodo/projeto.json.
+description: Conduz a criação de um app pelo Método Apps Academy. Use sempre que a pessoa quiser começar um app, continuar o app desta pasta, saber o próximo passo, ou pedir o Método Apps Academy. Use também antes de qualquer trabalho numa pasta que tenha o arquivo .metodo/projeto.json.
 ---
 
 # Maestro do Método Apps Academy

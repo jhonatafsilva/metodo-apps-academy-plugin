@@ -21,7 +21,7 @@ O plugin precisa do [Node.js](https://nodejs.org) 20 ou mais novo. A chave funci
 
 ## Usar
 
-Crie uma pasta para o app, abra o Claude Code dentro dela e digite `/app`.
+Crie uma pasta para o app, abra o Claude Code dentro dela e peça: "Quero começar um app novo com o Método Apps Academy".
 
 O plugin liga o **painel do app** em `http://127.0.0.1:4747`. Ele mostra cada passo enquanto acontece: a pesquisa, a persona, as telas e o protótipo. Para abrir o painel sem o Claude Code, rode na pasta do app:
 

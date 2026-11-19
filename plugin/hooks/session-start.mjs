@@ -87,6 +87,6 @@ if (existsSync(stateFile)) {
 
   console.log(
     `Esta pasta é o app "${String(state.name ?? "")}", construído pelo Método Apps Academy.${planNote}${panelNote} ` +
-      "Antes de qualquer trabalho no app, use a skill app (comando /app) para pegar os passos da vez e seguir a ficha de cada um.",
+      "Antes de qualquer trabalho no app, use a skill app do plugin metodo-apps-academy para pegar os passos da vez e seguir a ficha de cada um.",
   );
 }
